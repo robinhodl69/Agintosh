@@ -1,5 +1,6 @@
 async function enviarMensajeAlAgente(mensaje) {
-  const response = await fetch("http://127.0.0.1:7860/", {
+  //const response = await fetch("http://127.0.0.1:7860/", {
+  const response = await fetch("https://99ea-2806-102e-12-7f5d-9c2a-14bc-a6cf-9a0.ngrok-free.app/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
