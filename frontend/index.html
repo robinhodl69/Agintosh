@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Agintosh</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="chat-container">
+  <div id="messages" class="messages"></div>
+
+  <div class="input-container">
+    <input type="text" id="userInput" placeholder="Send 1 MNT t0 0x..." />
+    <button onclick="handleUserInput()">Send</button>
+  </div>
+
+  <button id="connectBtn">🔌 Connect Wallet</button>
+  <p id="walletAddress">🦊 No Connected</p>
+</div>
+
+<script src="./wallet.js"></script>
+<script>
+  async function handleUserInput() {
+    const input = document.getElementById('userInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage("🧑‍💻 " + message, "user");
+    input.value = "";
+
+    try {
+      const response = await fetch("http://127.0.0.1:7860/api/predict/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: [message] })
+      });
+
+      const result = await response.json();
+      const parsed = result.data[0];
+
+      if (parsed.type === "text") {
+        addMessage("🤖 " + parsed.response, "agent");
+      } else if (parsed.type === "action" && parsed.action === "transfer") {
+        addMessage(`🤖 Transferencia solicitada: ${parsed.amount} MNT a ${parsed.to}`, "agent");
+        sendTransfer(parsed.to, parsed.amount);
+      } else {
+        addMessage("🤖 No entendí lo que quieres hacer.", "agent");
+      }
+    } catch (err) {
+      addMessage("❌ Error al comunicar con el agente: " + err.message, "agent");
+    }
+  }
+
+  function addMessage(text, type) {
+    const container = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'message ' + type;
+    div.textContent = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  window.onload = () => {
+    document.getElementById('connectBtn').onclick = connectWallet;
+  };
+</script>
+</body>
+</html>

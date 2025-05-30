@@ -1,0 +1,24 @@
+/* Estilo retro para el área del chatbot */
+.gr-chatbot {
+    background-color: #000000 !important;
+    color: #00FF00 !important;
+    font-family: "Lucida Console", monospace;
+    font-size: 14px;
+    border: 2px inset #808080 !important;
+    padding: 10px;
+    box-shadow: inset 1px 1px #ffffff, inset -1px -1px #000000;
+}
+
+/* Burbujas del chat */
+.gr-chat-message {
+    background-color: #000000 !important;
+    border: none !important;
+    color: #00FF00 !important;
+    font-family: "Lucida Console", monospace;
+}
+
+/* Caja de texto donde escribes */
+textarea {
+    height: 80px;
+    resize: none;
+}

@@ -1,0 +1,135 @@
+body {
+  background-image: url("aqua.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  font-family: "Lucida Grande", sans-serif;
+  color: #000;
+  padding: 30px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.chat-container {
+  width: 520px;
+  margin: auto;
+  background-color: #ececec;
+  padding: 20px;
+  border: 2px solid #888;
+  font-family: "Lucida Grande", sans-serif;
+}
+
+.messages {
+  height: 350px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #999;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  color: #000;
+}
+
+.message {
+  margin-bottom: 8px;
+}
+
+.message.user::before {
+  content: "🧑‍💻 ";
+  font-weight: bold;
+  color: #000080;
+}
+
+.message.agent::before {
+  content: "🤖 ";
+  font-weight: bold;
+  color: #006400;
+}
+
+.input-container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+#userInput {
+  flex: 1;
+  padding: 6px;
+  background-color: white;
+  border: 1px solid #999;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  color: #000;
+}
+
+button {
+  font-family: "Lucida Grande", sans-serif;
+  background-color: #dcdcdc;
+  border: 1px solid #999;
+  padding: 6px 12px;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #c0c0c0;
+}
+
+#connectBtn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#walletAddress {
+  font-size: 12px;
+  margin-top: 6px;
+  color: #333;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e5e5e5;
+  border-bottom: 1px solid #b0b0b0;
+  padding: 5px 10px;
+  margin: -20px -20px 10px -20px; /* sobresale sobre el padding del container */
+  height: 28px;
+}
+
+.window-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.window-buttons .btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.window-buttons .close {
+  background-color: #ff5f57;
+  border: 1px solid #e0443e;
+}
+
+.window-buttons .minimize {
+  background-color: #ffbd2e;
+  border: 1px solid #e1a400;
+}
+
+.window-buttons .maximize {
+  background-color: #28c840;
+  border: 1px solid #1aab29;
+}
+
+.window-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #555;
+}
+
