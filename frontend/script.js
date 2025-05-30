@@ -1,10 +1,12 @@
+const BACKEND_URL = "https://af7fce42afdf46feaa.gradio.live/";  // Actualiza esta URL si reinicias Gradio
+
 // Verifica el estado del agente al cargar
 async function checkAgentStatus() {
   try {
-    const res = await fetch("https://99ea-2806-102e-12-7f5d-9c2a-14bc-a6cf-9a0.ngrok-free.app/", {
+    const res = await fetch(BACKEND_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: ["estado"] })  // mensaje dummy
+      body: JSON.stringify({ data: ["estado"] })  // Mensaje dummy
     });
 
     if (res.ok) {
@@ -17,31 +19,33 @@ async function checkAgentStatus() {
   }
 }
 
-// Llama esta función cuando se cargue la página
+// Llama esta función al cargar la página
 window.onload = () => {
   checkAgentStatus();
   document.getElementById("connectBtn").onclick = connectWallet;
 };
 
-// Función principal para enviar mensajes
+// Función principal para enviar mensajes al agente
 async function enviarMensajeAlAgente(mensaje) {
-  const response = await fetch("https://99ea-2806-102e-12-7f5d-9c2a-14bc-a6cf-9a0.ngrok-free.app/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ data: [mensaje] })
-  });
+  try {
+    const response = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [mensaje] })
+    });
 
-  const result = await response.json();
-  const parsed = result.data[0];
+    const result = await response.json();
+    const parsed = result.data[0];
 
-  if (parsed.type === "text") {
-    alert("🤖 Agente: " + parsed.response);
-  } else if (parsed.type === "action" && parsed.action === "transfer") {
-    alert(`🤖 Agente solicita enviar ${parsed.amount} MNT a ${parsed.to}`);
-    document.getElementById("recipient").value = parsed.to;
-    document.getElementById("amount").value = parsed.amount;
-    sendTransfer(); // ejecuta la transferencia automáticamente
+    if (parsed.type === "text") {
+      alert("🤖 Agente: " + parsed.response);
+    } else if (parsed.type === "action" && parsed.action === "transfer") {
+      alert(`🤖 Agente solicita enviar ${parsed.amount} MNT a ${parsed.to}`);
+      document.getElementById("recipient").value = parsed.to;
+      document.getElementById("amount").value = parsed.amount;
+      sendTransfer(); // Ejecuta automáticamente
+    }
+  } catch (err) {
+    alert("❌ Error al comunicar con el agente: " + err.message);
   }
 }
