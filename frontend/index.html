@@ -15,60 +15,15 @@
     <button onclick="handleUserInput()">Send</button>
   </div>
 
-  <button id="connectBtn">🔌 Connect Wallet</button>
-  <p id="walletAddress">🦊 No Connected</p>
-  <p id="agentStatus">🟡 Verificando conexión con Agintosh...</p>
-  <p id="agentStatus" style="font-size: 12px; margin-top: 6px;">🔴 Agente Offline</p>
+  <input type="hidden" id="recipient">
+  <input type="hidden" id="amount">
 
+  <button id="connectBtn">🔌 Connect Wallet</button>
+  <p id="walletAddress">🥹 No Connected</p>
+  <p id="agentStatus" style="font-size: 12px; margin-top: 6px;">🟡 Verificando conexión con Agintosh...</p>
 </div>
 
 <script src="./wallet.js"></script>
-<script>
-  async function handleUserInput() {
-    const input = document.getElementById('userInput');
-    const message = input.value.trim();
-    if (!message) return;
-
-    addMessage("🧑‍💻 " + message, "user");
-    input.value = "";
-
-    try {
-      const response = await fetch("http://127.0.0.1:7860/api/predict/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ data: [message] })
-      });
-
-      const result = await response.json();
-      const parsed = result.data[0];
-
-      if (parsed.type === "text") {
-        addMessage("🤖 " + parsed.response, "agent");
-      } else if (parsed.type === "action" && parsed.action === "transfer") {
-        addMessage(`🤖 Transferencia solicitada: ${parsed.amount} MNT a ${parsed.to}`, "agent");
-        sendTransfer(parsed.to, parsed.amount);
-      } else {
-        addMessage("🤖 No entendí lo que quieres hacer.", "agent");
-      }
-    } catch (err) {
-      addMessage("❌ Error al comunicar con el agente: " + err.message, "agent");
-    }
-  }
-
-  function addMessage(text, type) {
-    const container = document.getElementById('messages');
-    const div = document.createElement('div');
-    div.className = 'message ' + type;
-    div.textContent = text;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-  }
-
-  window.onload = () => {
-    document.getElementById('connectBtn').onclick = connectWallet;
-  };
-</script>
+<script src="./script.js"></script>
 </body>
 </html>

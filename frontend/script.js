@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://af7fce42afdf46feaa.gradio.live/";  // Actualiza esta URL si reinicias Gradio
+const BACKEND_URL = "https://348b2d4aaf50d05179.gradio.live/";  // Reemplaza si cambias de link
 
 // Verifica el estado del agente al cargar
 async function checkAgentStatus() {
@@ -9,8 +9,9 @@ async function checkAgentStatus() {
       body: JSON.stringify({ data: ["estado"] })  // Mensaje dummy
     });
 
+    const status = document.getElementById("agentStatus");
     if (res.ok) {
-      document.getElementById("agentStatus").textContent = "🟢 Agente Online";
+      status.textContent = "🟢 Agente Online";
     } else {
       throw new Error("Sin respuesta válida");
     }
@@ -18,12 +19,6 @@ async function checkAgentStatus() {
     document.getElementById("agentStatus").textContent = "🔴 Agente Offline";
   }
 }
-
-// Llama esta función al cargar la página
-window.onload = () => {
-  checkAgentStatus();
-  document.getElementById("connectBtn").onclick = connectWallet;
-};
 
 // Función principal para enviar mensajes al agente
 async function enviarMensajeAlAgente(mensaje) {
@@ -38,14 +33,41 @@ async function enviarMensajeAlAgente(mensaje) {
     const parsed = result.data[0];
 
     if (parsed.type === "text") {
-      alert("🤖 Agente: " + parsed.response);
+      addMessage("🤖 " + parsed.response, "agent");
     } else if (parsed.type === "action" && parsed.action === "transfer") {
-      alert(`🤖 Agente solicita enviar ${parsed.amount} MNT a ${parsed.to}`);
+      addMessage(`🤖 Transferencia solicitada: ${parsed.amount} MNT a ${parsed.to}`, "agent");
       document.getElementById("recipient").value = parsed.to;
       document.getElementById("amount").value = parsed.amount;
       sendTransfer(); // Ejecuta automáticamente
     }
   } catch (err) {
-    alert("❌ Error al comunicar con el agente: " + err.message);
+    addMessage("❌ Error al comunicar con el agente: " + err.message, "agent");
   }
 }
+
+// Agrega mensaje al contenedor
+function addMessage(text, type) {
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'message ' + type;
+  div.textContent = text;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+// Escucha input del usuario
+async function handleUserInput() {
+  const input = document.getElementById('userInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  addMessage("🧑‍💻 " + message, "user");
+  input.value = "";
+  await enviarMensajeAlAgente(message);
+}
+
+// Inicialización
+window.onload = () => {
+  checkAgentStatus();
+  document.getElementById("connectBtn").onclick = connectWallet;
+};
