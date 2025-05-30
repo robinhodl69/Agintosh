@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://348b2d4aaf50d05179.gradio.live/";  // Reemplaza si cambias de link
+const BACKEND_URL = "https://348b2d4aaf50d05179.gradio.live/api/predict/"; // Reemplaza si cambias de link
 
 // Verifica el estado del agente al cargar
 async function checkAgentStatus() {
